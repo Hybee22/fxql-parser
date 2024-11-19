@@ -11,12 +11,38 @@ export class ExchangeRateService {
     readonly exchangeRateRepository: Repository<ExchangeRate>,
   ) {}
 
-  async createMany(dtos: CreateExchangeRateDto[]): Promise<ExchangeRate[]> {
-    const rates = this.exchangeRateRepository.create(dtos);
-    return await this.exchangeRateRepository.save(rates);
+  async createMany(
+    rates: (CreateExchangeRateDto & { shouldUpdate?: boolean })[],
+  ) {
+    const results = [];
+
+    for (const rate of rates) {
+      // Check if record exists
+      const existing = await this.exchangeRateRepository.findOne({
+        where: {
+          sourceCurrency: rate.sourceCurrency,
+          destinationCurrency: rate.destinationCurrency,
+        },
+      });
+
+      if (existing && rate.shouldUpdate) {
+        // Update existing record
+        results.push(
+          await this.exchangeRateRepository.save({
+            ...existing,
+            ...rate,
+          }),
+        );
+      } else {
+        // Create new record
+        results.push(await this.exchangeRateRepository.save(rate));
+      }
+    }
+
+    return results;
   }
 
   async findAll(): Promise<ExchangeRate[]> {
     return await this.exchangeRateRepository.find();
   }
-} 
+}
