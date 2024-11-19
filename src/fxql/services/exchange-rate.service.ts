@@ -1,25 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExchangeRateRepository } from '../repositories/exchange-rate.repository';
-import { CreateExchangeRateDto } from '../dtos/create-exchange-rate.dto';
+import { Repository } from 'typeorm';
 import { ExchangeRate } from '../entities/exchange-rate.entity';
+import { CreateExchangeRateDto } from '../dtos/create-exchange-rate.dto';
 
 @Injectable()
 export class ExchangeRateService {
   constructor(
-    @InjectRepository(ExchangeRateRepository)
-    readonly exchangeRateRepository: ExchangeRateRepository,
+    @InjectRepository(ExchangeRate)
+    readonly exchangeRateRepository: Repository<ExchangeRate>,
   ) {}
 
-  async create(createDto: CreateExchangeRateDto): Promise<ExchangeRate> {
-    return await this.exchangeRateRepository.createExchangeRate(createDto);
+  async createMany(dtos: CreateExchangeRateDto[]): Promise<ExchangeRate[]> {
+    const rates = this.exchangeRateRepository.create(dtos);
+    return await this.exchangeRateRepository.save(rates);
   }
 
   async findAll(): Promise<ExchangeRate[]> {
-    return await this.exchangeRateRepository.findAll();
-  }
-
-  async findByCurrencyPair(sourceCurrency: string, destinationCurrency: string): Promise<ExchangeRate[]> {
-    return await this.exchangeRateRepository.findByCurrencyPair(sourceCurrency, destinationCurrency);
+    return await this.exchangeRateRepository.find();
   }
 } 
