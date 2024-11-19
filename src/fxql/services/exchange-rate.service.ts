@@ -8,7 +8,7 @@ import { ExchangeRate } from '../entities/exchange-rate.entity';
 export class ExchangeRateService {
   constructor(
     @InjectRepository(ExchangeRateRepository)
-    private exchangeRateRepository: ExchangeRateRepository,
+    readonly exchangeRateRepository: ExchangeRateRepository,
   ) {}
 
   async create(createDto: CreateExchangeRateDto): Promise<ExchangeRate> {
@@ -16,7 +16,7 @@ export class ExchangeRateService {
   }
 
   async findAll(): Promise<ExchangeRate[]> {
-    return await this.exchangeRateRepository.find();
+    return await this.exchangeRateRepository.findAll();
   }
 
   async findByCurrencyPair(sourceCurrency: string, destinationCurrency: string): Promise<ExchangeRate[]> {
