@@ -27,14 +27,18 @@ export class FXQLParserService {
       // Parse all statements and handle duplicates
       const rateMap = new Map<string, CreateExchangeRateDto>();
     
+      // First, collect all unique currency pairs we need to process
       statements.forEach((statement) => {
         const parsedRate = this.parseSingle(statement);
         const pairKey = `${parsedRate.sourceCurrency}-${parsedRate.destinationCurrency}`;
-        rateMap.set(pairKey, parsedRate); // Later entries will override earlier ones
+        rateMap.set(pairKey, parsedRate);
       });
 
-      // Convert map back to array
-      return Array.from(rateMap.values());
+      // Convert map back to array and add update flag
+      return Array.from(rateMap.values()).map(rate => ({
+        ...rate,
+        shouldUpdate: true // This flag indicates we should update if record exists
+      }));
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error;
