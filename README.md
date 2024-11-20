@@ -134,7 +134,7 @@ yarn start:prod
 ### Parse FXQL Statement
 
 ```bash
-POST /fxql/parse
+POST /api/fxql-statements
 Content-Type: application/json
 
 {
