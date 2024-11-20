@@ -1,9 +1,11 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiResponse as SwaggerResponse, ApiTags, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { FXQLParserService } from '../services/fxql-parser.service';
 import { ExchangeRateService } from '../services/exchange-rate.service';
 import { ApiResponse } from '../../common/responses/api-response.dto';
 import { ExchangeRateResponseDto } from '../dtos/exchange-rate-response.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
+import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
 
 class FXQLInput {
   @ApiProperty({
@@ -16,6 +18,8 @@ class FXQLInput {
 
 @ApiTags('FXQL')
 @Controller('')
+@UseGuards(ThrottlerGuard)
+@UseInterceptors(LoggingInterceptor)
 export class FXQLController {
   constructor(
     private readonly fxqlParserService: FXQLParserService,
