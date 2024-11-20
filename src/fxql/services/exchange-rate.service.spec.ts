@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExchangeRateService } from './exchange-rate.service';
 import { ExchangeRate } from '../entities/exchange-rate.entity';
-import { CreateExchangeRateDto } from '../dtos/create-exchange-rate.dto';
+// import { CreateExchangeRateDto } from '../dtos/create-exchange-rate.dto';
 
 describe('ExchangeRateService', () => {
   let service: ExchangeRateService;
@@ -19,6 +19,7 @@ describe('ExchangeRateService', () => {
             create: jest.fn(),
             save: jest.fn(),
             find: jest.fn(),
+            findOne: jest.fn(),
             createQueryBuilder: jest.fn(),
           },
         },
