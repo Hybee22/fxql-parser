@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { configuration } from './config/configuration';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
-const { apiPrefix } = configuration();
+const { apiPrefix, port } = configuration();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -20,6 +20,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();
