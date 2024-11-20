@@ -11,6 +11,7 @@ Foreign Exchange Query Language (FXQL) Parser implementation using NestJS. This 
 ## FXQL Statement Specification
 
 ### Basic Structure
+
 ```
 CURR1-CURR2 {
  BUY {AMOUNT}
@@ -20,6 +21,7 @@ CURR1-CURR2 {
 ```
 
 ### Rules and Constraints
+
 - **CURR1** (Source Currency):
   - Must be exactly 3 uppercase characters
   - Valid: USD, GBP, EUR
@@ -49,23 +51,27 @@ CURR1-CURR2 {
 ## Project Setup
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd fxql-parser
 ```
 
 2. Install dependencies:
+
 ```bash
 yarn install
 ```
 
 3. Configure environment variables:
+
 ```bash
 cp .env.example .env
 # Update .env with your database credentials
 ```
 
 4. Create the database:
+
 ```bash
 # Connect to PostgreSQL
 psql -U postgres
@@ -78,6 +84,7 @@ CREATE DATABASE fxql_db;
 ```
 
 5. Run database migrations:
+
 ```bash
 # Run migrations
 yarn migration:run
@@ -89,21 +96,25 @@ yarn migration:revert
 ## Database Migrations
 
 ### Generate a new migration
+
 ```bash
 yarn migration:generate src/database/migrations/MigrationName
 ```
 
 ### Create a blank migration
+
 ```bash
 yarn migration:create src/database/migrations/MigrationName
 ```
 
 ### Run pending migrations
+
 ```bash
 yarn migration:run
 ```
 
 ### Revert last migration
+
 ```bash
 yarn migration:revert
 ```
@@ -121,6 +132,7 @@ yarn start:prod
 ## API Endpoints
 
 ### Parse FXQL Statement
+
 ```bash
 POST /fxql/parse
 Content-Type: application/json
@@ -128,16 +140,6 @@ Content-Type: application/json
 {
   "statement": "USD-EUR { BUY 0.85 SELL 0.87 CAP 10000 }"
 }
-```
-
-### Get All Exchange Rates
-```bash
-GET /fxql
-```
-
-### Get Exchange Rates by Currency Pair
-```bash
-GET /fxql/pair?source=USD&destination=EUR
 ```
 
 ## Testing
@@ -156,12 +158,14 @@ yarn test:cov
 ## Development
 
 ### Branch Naming Convention
+
 - Feature: `feature/`
 - Bugfix: `bugfix/`
 - Hotfix: `hotfix/`
 - Release: `release/`
 
 ### Commit Message Format
+
 ```
 <type>(<scope>): <description>
 
@@ -172,17 +176,18 @@ yarn test:cov
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| DATABASE_HOST | PostgreSQL host | localhost |
-| DATABASE_PORT | PostgreSQL port | 5432 |
-| DATABASE_USERNAME | Database username | - |
-| DATABASE_PASSWORD | Database password | - |
-| DATABASE_NAME | Database name | fxql_db |
+| Variable          | Description       | Default   |
+| ----------------- | ----------------- | --------- |
+| DATABASE_HOST     | PostgreSQL host   | localhost |
+| DATABASE_PORT     | PostgreSQL port   | 5432      |
+| DATABASE_USERNAME | Database username | -         |
+| DATABASE_PASSWORD | Database password | -         |
+| DATABASE_NAME     | Database name     | fxql_db   |
 
 ## Error Handling
 
 The service provides detailed error messages for invalid FXQL statements, including:
+
 - Invalid currency formats
 - Invalid numeric values
 - Syntax errors
@@ -198,3 +203,6 @@ The service provides detailed error messages for invalid FXQL statements, includ
 ## License
 
 This project is [MIT licensed](LICENSE).
+
+## Documentation
+For detailed documentation, visit [FXQL Parser Documentation](https://fxql-parser-production.up.railway.app/docs).
